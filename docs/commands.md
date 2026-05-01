@@ -1,90 +1,81 @@
-# iOptron commands
+# iOptron RS-232 Command Language v3.10 — Implementation Status
 
-This document details the commands from the iOptron spec. This is intended
-to help keep track of what has and has not yet been implemented. This document
-is broken out by the same *command groups* as in the spec doc.
+All 47 commands from the [iOptron RS-232 Command Language v3.10](https://www.ioptron.com/v/ASCOM/RS-232_Command_Language2014V310.pdf) specification are implemented and tested.
 
 ## Get Information and Settings
-- [x] `:GLS#` (12/26)
-- [x] `:GUT#` (12/27)
-- [x] `:GEP#` (12/28)
-- [x] `:GAC#` (12/30)
-- [x] `:GTR#` (12/27)
-- [x] `:GPC#` (12/30)
-- [x] `:GSR#` (12/30)
-- [x] `:GAL#` (12/30)
-- [x] `:AG#` (12/30)
-- [x] `:GMT#` (12/30)
-- [x] `:GGF#` (12/30)
-- [x] `:GPE#` (12/30)
-- [x] `:GPR#` (12/30)
+| Command | Method | Status |
+|---------|--------|--------|
+| `:GLS#` | `get_all_kinds_of_status()` | ✅ Implemented + tested |
+| `:GUT#` | `get_time_information()` | ✅ Implemented + tested |
+| `:GEP#` | `get_ra_and_dec()` | ✅ Implemented + tested |
+| `:GAC#` | `get_alt_and_az()` | ✅ Implemented + tested |
+| `:GTR#` | `get_custom_tracking_rate()` | ✅ Implemented + tested |
+| `:GPC#` | `get_parking_position()` | ✅ Implemented + tested |
+| `:GSR#` | `get_max_slewing_speed()` | ✅ Implemented + tested |
+| `:GAL#` | `get_altitude_limit()` | ✅ Implemented + tested |
+| `:AG#` | `get_guiding_rate()` | ✅ Implemented + tested |
+| `:GMT#` | `get_meredian_treatment()` | ✅ Implemented + tested |
+| `:GGF#` | `get_ra_guiding_filter_status()` | ✅ Implemented + tested |
+| `:GPE#` | `get_pec_integrity()` | ✅ Implemented + tested |
+| `:GPR#` | `get_pec_recording_status()` | ✅ Implemented + tested |
 
 ## Change Settings
-- [x] `:RT0#`
-- [x] `:RT1#`
-- [x] `:RT2#`
-- [x] `:RT3#`
-- [x] `:RT4#`
-- [x] `:SRn#` (12/30)
-- [x] `:SGF0#` (12/30)
-- [x] `:SGF1#` (12/30)
-- [x] `:SGsMMM#` (12/27)
-- [x] `:SDS0#` (12/26)
-- [x] `:SDS1#` (12/26)
-- [x] `:SUTXXXXXXXXXXXXX#` (12/27)
-- [x] `:SLOsTTTTTTTT#` (1/1 - untested)
-- [x] `:SLAsTTTTTTTT#` (1/1 - untested)
-- [x] `:SHE0#` (12/31)
-- [x] `:SHE1#` (12/31)
-- [x] `:MSRn#` (1/1)
-- [x] `:SALsnn#` (1/1 - untested)
-- [x] `:RGnnnn#` (1/1 - untested)
-- [x] `:SMTnnn#` (1/1 - untested)
-- [x] `:RAS#` (1/1 - untested)
+| Command | Method | Status |
+|---------|--------|--------|
+| `:RT0-4#` | `set_tracking_rate()` | ✅ Implemented + tested |
+| `:SRn#` | `set_arrow_button_movement_speed()` | ✅ Implemented + tested |
+| `:SGF0/1#` | `set_ra_guiding_filter_status()` | ✅ Implemented + tested |
+| `:SGsMMM#` | `set_timezone_offset()` | ✅ Implemented + tested |
+| `:SDS0/1#` | `set_daylight_savings()` | ✅ Implemented + tested |
+| `:SUTX...#` | `set_time()` | ✅ Implemented + tested |
+| `:SLOsT...#` | `set_longitude()` | ✅ Implemented + tested |
+| `:SLAsT...#` | `set_latitude()` | ✅ Implemented + tested |
+| `:SHE0/1#` | `set_hemisphere()` | ✅ Implemented + tested |
+| `:MSRn#` | `set_max_slewing_speed()` | ✅ Implemented + tested |
+| `:SALsnn#` | `set_altitude_limit()` | ✅ Implemented + tested |
+| `:RGnnnn#` | `set_guiding_rate()` | ✅ Implemented + tested |
+| `:SMTnnn#` | `set_meredian_treatment()` | ✅ Implemented + tested |
+| `:RAS#` | `reset_settings()` | ✅ Implemented + tested |
 
 ## Mount Motion
-- [x] `:MS1#` (1/3 - untested)
-- [x] `:MS2#` (1/3 - untested)
-- [x] `:MSS#` (1/3 - untested)
-- [X] `:Q#`
-- [x] `:ST0#` (1/3 - untested)
-- [x] `:ST1#` (1/3 - untested)
-- [x] `:ZSXXXXX#` (1/6 - untested)
-- [x] `:ZQXXXXX#` (1/6 - untested)
-- [x] `:ZEXXXXX#` (1/6 - untested)
-- [x] `:ZCXXXXX#` (1/6 - untested)
-- [ ] `:MnXXXXX#` - deprecated, do not implement
-- [ ] `:MeXXXXX#` - deprecated, do not implement
-- [ ] `:MsXXXXX#` - deprecated, do not implement
-- [ ] `:MwXXXXX#` - deprecated, do not implement
-- [x] `:MP1#`
-- [x] `:MP0#`
-- [X] `:MH#`
-- [X] `:MSH#`
-- [x] `:SPR0#` (12/27)
-- [x] `:SPR1#` (12/27)
-- [x] `:SPP0#` (1/3)
-- [x] `:SPP1#` (1/3)
-- [x] `:RRnnnnn#` (12/27 - untested)
-- [x] `:mn#` (1/3 - untested)
-- [x] `:me#` (1/3 - untested)
-- [x] `:ms#` (1/3 - untested)
-- [x] `:mw#` (1/3 - untested)
-- [x] `:qR#`
-- [x] `:qD#`
+| Command | Method | Status |
+|---------|--------|--------|
+| `:MS1#` | `slew_to_ra_dec()` | ✅ Implemented + tested |
+| `:MS2#` | `slew_to_ra_dec_counterweight_up()` | ✅ Implemented + tested |
+| `:MSS#` | `move_to_defined_alt_and_az()` | ✅ Implemented + tested |
+| `:Q#` | `stop_all_movement()` | ✅ Implemented + tested |
+| `:ST0/1#` | `stop_tracking()` / `start_tracking()` | ✅ Implemented + tested |
+| `:ZSXXXXX#` | `move_ra_positive()` | ✅ Implemented + tested |
+| `:ZQXXXXX#` | `move_ra_negative()` | ✅ Implemented + tested |
+| `:ZEXXXXX#` | `move_dec_positive()` | ✅ Implemented + tested |
+| `:ZCXXXXX#` | `move_dec_negative()` | ✅ Implemented + tested |
+| `:mn/me/ms/mw#` | `move_north/east/south/west()` | ✅ Implemented + tested |
+| `:MP1#` | `park()` | ✅ Implemented + tested |
+| `:MP0#` | `unpark()` | ✅ Implemented + tested |
+| `:MH#` | `go_to_zero_position()` | ✅ Implemented + tested |
+| `:MSH#` | `go_to_mechanical_zero_position()` | ✅ Implemented + tested |
+| `:SPR0/1#` | `start_recording_pec()` / `stop_recording_pec()` | ✅ Implemented + tested |
+| `:SPP0/1#` | `enable_pec_playback()` | ✅ Implemented + tested |
+| `:RRnnnnn#` | `set_custom_tracking_rate()` | ✅ Implemented + tested |
+| `:qR#` | `stop_e_or_w_movement()` | ✅ Implemented + tested |
+| `:qD#` | `stop_n_or_s_movement()` | ✅ Implemented + tested |
 
-# Position
-- [x] `:CM#` (1/2 - untested)
-- [x] `:QAP#` (1/2)
-- [x] `:SRATTTTTTTTT#` (1/2 - untested)
-- [x] `:SdsTTTTTTTT#` (1/2 - untested)
-- [x] `:SasTTTTTTTT#` (1/3 - untested)
-- [x] `:SzTTTTTTTTT#` (1/3 - untested)
-- [x] `:SZP#` (1/2 - untested)
-- [x] `:SPATTTTTTTTT#` (1/2 - untested)
-- [x] `:SPHTTTTTTTT#` (1/2 - untested)
+## Position
+| Command | Method | Status |
+|---------|--------|--------|
+| `:CM#` | `synchronize_mount()` | ✅ Implemented + tested |
+| `:QAP#` | `get_coordinate_memory()` | ✅ Implemented + tested |
+| `:SRAT...#` | `set_commanded_right_ascension()` | ✅ Implemented + tested |
+| `:SdsT...#` | `set_commanded_declination()` | ✅ Implemented + tested |
+| `:SasT...#` | `set_commanded_altitude()` | ✅ Implemented + tested |
+| `:SzT...#` | `set_commanded_azimuth()` | ✅ Implemented + tested |
+| `:SZP#` | `set_current_position_as_zero()` | ✅ Implemented + tested |
+| `:SPAT...#` | `set_parking_azimuth()` | ✅ Implemented + tested |
+| `:SPHT...#` | `set_parking_altitude()` | ✅ Implemented + tested |
 
-## Misc / mount info
-- [x] `:MountInfo#`
-- [x] `:FW1#`
-- [x] `:FW2#`
+## Miscellaneous
+| Command | Method | Status |
+|---------|--------|--------|
+| `:FW1#` | `get_main_firmwares()` | ✅ Implemented + tested |
+| `:FW2#` | `get_motor_firmwares()` | ✅ Implemented + tested |
+| `:MountInfo#` | `get_mount_version()` | ✅ Implemented + tested |

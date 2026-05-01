@@ -1,28 +1,17 @@
-import ioptron.ioptron as iopt 
+"""Example: Read time information from the mount."""
+from ioptron import TelescopeController
 
-scope = iopt.ioptron()
-print("Version #:  {}".format(scope.mount_version))
+HOST = '192.168.10.17'
+PORT = 8080
 
-# Get the time(s)
-scope.get_time_information()
-print("Offset #:  {}".format(scope.time.utc_offset))
-print("DST #:  {}".format(scope.time.dst))
-print("J2000 #:  {}".format(scope.time.julian_date))
-print("Unix - utc#:  {}".format(scope.time.unix_utc))
-print("Unix - offset #:  {}".format(scope.time.unix_offset))
-print("Formatted local:  {}".format(scope.time.formatted))
+with TelescopeController(HOST, PORT) as scope:
+    scope.assign_init_values()
+    scope.get_time_information()
 
-# Set the time(s)
-scope.set_daylight_savings(False)
-scope.set_timezone_offset()
-scope.set_time()
+    print(f"UTC offset (min): {scope.time.utc_offset}")
+    print(f"DST:              {scope.time.dst}")
+    print(f"Formatted time:   {scope.time.formatted}")
 
-# Get the time(s)
-scope.get_time_information()
-print("Offset #:  {}".format(scope.time.utc_offset))
-print("DST #:  {}".format(scope.time.dst))
-print("J2000 #:  {}".format(scope.time.julian_date))
-print("Unix - utc#:  {}".format(scope.time.unix_utc))
-print("Unix - offset #:  {}".format(scope.time.unix_offset))
-print("Formatted local:  {}".format(scope.time.formatted))
-
+    # Sync mount time to computer time (uncomment to use)
+    # scope.set_time()
+    # scope.set_timezone_offset()

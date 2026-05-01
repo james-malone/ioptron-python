@@ -1,17 +1,18 @@
-import ioptron as iom
-import ioptron.ioptron as iopt 
+"""Example: Park and unpark the mount."""
+from ioptron import TelescopeController
 
-scope = iopt.ioptron()
-# Park the mount
-print("PARKING: mount: {}".format(scope.park()))
-print("PARKING: is parked:: {}".format(scope.parking.is_parked))
+HOST = '192.168.10.17'
+PORT = 8080
 
-# Unpark the mount
-print("PARKING: unparking mount:: {}".format(scope.unpark()))
-print("PARKING: is parked:: {}".format(scope.parking.is_parked))
+with TelescopeController(HOST, PORT) as scope:
+    scope.assign_init_values()
 
-# Get the parking position
-scope.get_parking_position()
-print("PARKING: Altitude:: {}".format(scope.parking.altitude))
-print("PARKING: Azimuth:: {}".format(scope.parking.azimuth))
-print("PARKING: is parked:: {}".format(scope.parking.is_parked))
+    # Park
+    if scope.park():
+        print("Mount parked successfully.")
+    else:
+        print("Park failed.")
+
+    # Unpark
+    scope.unpark()
+    print(f"Is parked: {scope.parking.is_parked}")

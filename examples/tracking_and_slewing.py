@@ -1,43 +1,24 @@
-import ioptron as iom
-import ioptron.ioptron as iopt 
+"""Example: Start/stop tracking and slew to coordinates."""
+from ioptron import TelescopeController
 
-scope = iopt.ioptron()
-# Get custom tracking rate
-scope.get_custom_tracking_rate()
-print("TRACKING: custom rate:: {}".format(scope.tracking.custom))
+HOST = '192.168.10.17'
+PORT = 8080
 
-# Get custom tracking rate
-print("SLEWING: max speed:: {}".format(scope.get_max_slewing_speed()))
+with TelescopeController(HOST, PORT) as scope:
+    scope.assign_init_values()
 
-# Get altitude limit
-print("ALTITUDE: max limit:: {}".format(scope.get_altitude_limit()))
+    # Start sidereal tracking
+    scope.start_tracking()
+    scope.get_all_kinds_of_status()
+    print(f"Tracking: {scope.tracking.current_rate()}")
 
-# Get ra and dec guiding rates
-scope.get_guiding_rate()
-print("GUIDING RATE: RA:: {}".format(scope.guiding.right_ascention_rate))
-print("GUIDING RATE: DEC:: {}".format(scope.guiding.declination_rate))
+    # Set a target and slew (RA in hours/min/sec, Dec in deg/min/sec)
+    scope.set_commanded_right_ascension(12, 30, 0)
+    scope.set_commanded_declination(45, 0, 0)
+    if scope.slew_to_ra_dec():
+        print("Slewing to target...")
+    else:
+        print("Slew rejected (below altitude limit or mechanical limit).")
 
-# Get the meredian treatment
-scope.get_meredian_treatment()
-print("MEREDIAN: code:: {}".format(scope.meredian.code))
-print("MEREDIAN: description:: {}".format(scope.meredian.description))
-print("MEREDIAN: degree limit:: {}".format(scope.meredian.degree_limit))
-
-# PEC tests
-scope.get_pec_integrity()
-print("PEC: integrity:: {}".format(scope.pec.integrity_complete))
-scope.get_pec_recording_status()
-print("PEC: recording:: {}".format(scope.pec.recording))
-
-# Tracking rates
-scope.get_all_kinds_of_status()
-print("TRACKING: current rate:: {}".format(scope.tracking.current_rate()))
-print("TRACKING: available rates:: {}".format(scope.tracking.available_rates))
-print("TRACKING: set siderial:: {}".format(scope.set_tracking_rate('sidereal')))
-scope.get_all_kinds_of_status()
-print("TRACKING: current rate:: {}".format(scope.tracking.current_rate()))
-
-# Movement speed
-print("TRACKING: get max slew rate:: {}".format(str(scope.get_max_slewing_speed())))
-print("TRACKING: set max slew rate at 512x:: {}".format(scope.set_max_slewing_speed('512x')))
-print("TRACKING: get max slew rate:: {}".format(str(scope.get_max_slewing_speed())))
+    # Stop tracking
+    scope.stop_tracking()

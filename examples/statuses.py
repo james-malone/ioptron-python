@@ -1,41 +1,23 @@
-import ioptron as iom
-import ioptron.ioptron as iopt 
+"""Example: Read all mount status information."""
+from ioptron import TelescopeController
 
-scope = iopt.ioptron()
-print(">> Starting test of :GLS# >>")
-scope.get_all_kinds_of_status()
+HOST = '192.168.10.17'
+PORT = 8080
 
-# Lat and long
-print("Latitude:  {}".format(scope.location.latitude))
-print("Longitude:  {}".format(scope.location.longitude))
+with TelescopeController(HOST, PORT) as scope:
+    scope.assign_init_values()
+    scope.get_all_kinds_of_status()
 
-# GPS
-print("GPS available:  {}".format(scope.location.gps_available))
-print("GPS locked:  {}".format(scope.location.gps_locked))
-
-# System status
-print("System status code:  {}".format(scope.system_status.code))
-print("System status description:  {}".format(scope.system_status.description))
-print("System status is slewing:  {}".format(scope.is_slewing))
-print("System status is tracking:  {}".format(scope.tracking.is_tracking))
-print("System status is parked:  {}".format(scope.parking.is_parked))
-print("System status pec:  {}".format(scope.pec))
-print("System status pec recorded:  {}".format(scope.pec.integrity_complete))
-
-# Tracking rate
-print("Tracking rate - code:  {}".format(scope.tracking.code))
-print("Tracking rate - description:  {}".format(scope.tracking.current_rate()))
-
-# Moving speed
-print("Moving speed - code:  {}".format(scope.moving_speed.code))
-print("Moving speed - description:  {}".format(scope.moving_speed.description))
-
-# Time source
-print("Time source - code:  {}".format(scope.time_source.code))
-print("Time source - description:  {}".format(scope.time_source.description))
-
-# Hemisphere
-print("Hemisphere - code:  {}".format(scope.hemisphere.code))
-print("Hemisphere - location:  {}".format(scope.hemisphere.location))
-
-print("<< Done with :GLS# <<")
+    print(f"Latitude:  {scope.location.latitude}")
+    print(f"Longitude: {scope.location.longitude}")
+    print(f"GPS available: {scope.location.gps_available}")
+    print(f"GPS locked:    {scope.location.gps_locked}")
+    print(f"System status: {scope.system_status.description}")
+    print(f"Is slewing:    {scope.is_slewing}")
+    print(f"Is tracking:   {scope.tracking.is_tracking}")
+    print(f"Is parked:     {scope.parking.is_parked}")
+    print(f"Is home:       {scope.is_home}")
+    print(f"Tracking rate: {scope.tracking.current_rate()}")
+    print(f"Moving speed:  {scope.moving_speed.description}")
+    print(f"Time source:   {scope.time_source.description}")
+    print(f"Hemisphere:    {scope.hemisphere.location}")

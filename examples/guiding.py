@@ -1,26 +1,15 @@
-import ioptron as iom
-import ioptron.ioptron as iopt 
+"""Example: Read and set guiding rates."""
+from ioptron import TelescopeController
 
-scope = iopt.ioptron()
-# Refresh the status of the mount
-scope.refresh_status()
+HOST = '192.168.10.17'
+PORT = 8080
 
-# Get auto-guiding filter status
-## Note - I cannot test this on my mount (JM)
-ra_filter_status = scope.get_ra_guiding_filter_status()
-print("RA FILTER: status: {}".format(ra_filter_status))
+with TelescopeController(HOST, PORT) as scope:
+    scope.assign_init_values()
+    scope.get_guiding_rate()
 
-# PEC recording
-print(">> STARTING test of :SPR1# >>")
-print("Enable PEC recording:  {}".format(scope.start_recording_pec()))
-print("<< ENDING test of :SPR1# <<")
-print(">> STARTING test of :SPR0# >>")
-print("Disable PEC recording:  {}".format(scope.stop_recording_pec()))
-print("<< ENDING test of :SPR0# <<")
+    print(f"RA guiding rate:  {scope.guiding.right_ascention_rate}")
+    print(f"DEC guiding rate: {scope.guiding.declination_rate}")
 
-print(">> STARTING test of :SPP1# >>")
-print("Enable PEC recording:  {}".format(scope.enable_pec_playback(True)))
-print("<< ENDING test of :SPP1# <<")
-print(">> STARTING test of :SPP0# >>")
-print("Disable PEC recording:  {}".format(scope.enable_pec_playback(False)))
-print("<< ENDING test of :SPP0# <<")
+    # Set guiding rates (0.01 - 0.90 for RA, 0.10 - 0.99 for DEC)
+    # scope.set_guiding_rate(0.50, 0.50)
