@@ -1,1 +1,1 @@
-# Place holder file for the package
+from ioptron.ioptron import TelescopeController

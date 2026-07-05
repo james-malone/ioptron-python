@@ -1,8 +1,7 @@
-"0070":
-  description: "CEM70G, and CEM-70"
+"0120":
+  description: "CEM120"
   supported_models:
-    - CEM70G 
-    - CEM-70
+    - CEM120
   tracking_speeds:
     1: 1
     2: 2

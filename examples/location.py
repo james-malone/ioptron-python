@@ -1,14 +1,17 @@
-import ioptron as iom
-import ioptron.ioptron as iopt 
-import time
+"""Example: Read and set location information."""
+from ioptron import TelescopeController
 
-scope = iopt.ioptron()
-# Refresh the status of the mount
-scope.refresh_status()
-time.sleep(2)
+HOST = '192.168.10.17'
+PORT = 8080
 
-# Get the hemisphere and set it
-print("HEMISPHERE: location: {}".format(scope.hemisphere.location))
-scope.set_hemisphere('n')
-scope.refresh_status()
-print("HEMISPHERE: location: {}".format(scope.hemisphere.location))
+with TelescopeController(HOST, PORT) as scope:
+    scope.assign_init_values()
+    scope.get_all_kinds_of_status()
+
+    print(f"Current latitude:  {scope.location.latitude}")
+    print(f"Current longitude: {scope.location.longitude}")
+
+    # Set location (uncomment to use)
+    # scope.set_latitude(52.0)
+    # scope.set_longitude(-2.35)
+    # scope.set_hemisphere('north')
